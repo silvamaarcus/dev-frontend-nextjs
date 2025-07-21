@@ -1,3 +1,5 @@
+"use client";
+
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +11,100 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
+import { toast } from "sonner";
+import { Product } from "../types/product";
+import { api } from "../services/api";
+import { useState, useEffect } from "react";
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await api.getProducts();
+        setProducts(data);
+        setFilteredProducts(data);
+        
+        // Extrair categorias únicas
+        const uniqueCategories = Array.from(new Set(data.map(product => product.category)));
+        setCategories(uniqueCategories);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Erro ao carregar produtos",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Filtrar produtos baseado na busca e categoria
+  useEffect(() => {
+    let filtered = products;
+
+    if (searchTerm) {
+      filtered = filtered.filter(product =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedCategory) {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+
+    setFilteredProducts(filtered);
+  }, [products, searchTerm, selectedCategory]);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await api.deleteProduct(id);
+      // Atualizar o estado local removendo o produto
+      setProducts(prev => prev.filter(product => product.id !== id));
+      toast("Produto deletado com sucesso!", {
+        description: "O produto foi removido da lista.",
+      });
+    } catch (error) {
+      toast("Erro ao deletar produto", {
+        description: "Não foi possível deletar o produto.",
+      });
+      console.error("Erro ao deletar produto:", error);
+    }
+  };
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("");
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Carregando produtos...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-red-500">Erro: {error}</div>
+      </div>
+    );
+  }
+
   return (
-    <section className="bg-background text-foreground min-h-screen">
+    <section className="bg-background text-foreground min-h-screen p-6">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold">Nossos Produtos</h1>
         <p className="text-muted-foreground">
@@ -28,32 +120,57 @@ export default function ProductsPage() {
           <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
           <Input
             placeholder="Buscar produtos..."
-            // value={searchTerm}
-            // onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
           />
         </div>
 
-        <Select>
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger className="w-full md:w-[200px]">
             <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
-          {/* <SelectContent>
+          <SelectContent>
             {categories.map((category) => (
               <SelectItem key={category} value={category}>
                 {category}
               </SelectItem>
             ))}
-          </SelectContent> */}
+          </SelectContent>
         </Select>
 
-        {/* {(searchTerm || selectedCategory) && (
+        {(searchTerm || selectedCategory) && (
           <Button variant="outline" onClick={clearFilters}>
             Limpar Filtros
           </Button>
-        )} */}
+        )}
       </div>
+
+      {/* Resultados */}
+      <div className="mb-4">
+        <p className="text-muted-foreground">
+          Mostrando {filteredProducts.length} de {products.length} produtos
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredProducts.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+
+      {filteredProducts.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground text-lg">
+            Nenhum produto encontrado com os filtros aplicados.
+          </p>
+        </div>
+      )}
     </section>
   );
 }
