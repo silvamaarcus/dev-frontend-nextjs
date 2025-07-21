@@ -12,16 +12,14 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
-
-  // Formatar o preço para o formato brasileiro
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
-      currency: "USD",
+      currency: "BRL", 
     }).format(price);
   };
 
-  // Truncar o título do produto para 20 caracteres
+  // Truncar o título do produto
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
@@ -29,11 +27,13 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
 
   return (
     <Card className="group from-card to-card/90 border-border/50 overflow-hidden bg-gradient-to-br transition-all duration-300 hover:shadow-lg">
-      <div className="bg-muted/30 aspect-square overflow-hidden">
+      <div className="bg-muted/30 relative aspect-square overflow-hidden">
         <Image
           src={product.image}
+          fill
           alt={product.title}
-          className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
 
