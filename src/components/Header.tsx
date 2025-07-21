@@ -5,7 +5,7 @@ import { Plus, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export const Header = () => {
+export const HeaderComponent = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 
