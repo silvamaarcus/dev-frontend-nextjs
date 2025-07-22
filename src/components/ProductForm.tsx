@@ -213,7 +213,7 @@ export default function ProductForm({ product, title }: ProductFormProps) {
                   />
                 </div>
               ) : (
-                <div className="bg-muted/30 flex aspect-square items-center justify-center rounded-lg">
+                <div className="bg-neutral-200 flex aspect-square items-center justify-center rounded-lg">
                   <p className="text-muted-foreground">Imagem aparecerá aqui</p>
                 </div>
               )}
