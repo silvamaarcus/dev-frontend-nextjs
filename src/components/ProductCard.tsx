@@ -78,7 +78,7 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
             variant="outline"
             size="sm"
             onClick={() => onDelete(product.id)}
-            className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+            className="text-destructive hover:bg-destructive hover:text-white cursor-pointer"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
