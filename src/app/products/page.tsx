@@ -73,10 +73,12 @@ export default function ProductsPage() {
       setProducts(prev => prev.filter(product => product.id !== id));
       toast("Produto deletado com sucesso!", {
         description: "O produto foi removido da lista.",
+        richColors: true,
       });
     } catch (error) {
       toast("Erro ao deletar produto", {
         description: "Não foi possível deletar o produto.",
+        richColors: true,
       });
       console.error("Erro ao deletar produto:", error);
     }
