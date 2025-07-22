@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { CreateProductRequest } from "../types/product";
 import { api } from "../services/api";
 import { localStorageProducts } from "../products/helper";
+import { toast } from "sonner";
 
 export default function CreateProduct() {
   const router = useRouter();
@@ -15,11 +16,20 @@ export default function CreateProduct() {
   const handleCreateProduct = async (data: CreateProductRequest) => {
     try {
       // Simula o POST na API
-      await api.createProduct(data);
+      await api.createProduct(data);      
       // Salva localmente
       const savedProduct = localStorageProducts.save(data);
+
+      toast("Produto criado com sucesso!", {
+        description: `Produto ${savedProduct.title} adicionado ao catálogo!`,
+        richColors: true,
+      });
+
       router.push("/");
     } catch (error) {
+      toast.error("Parece que algo deu errado. Tente novamente mais tarde.", {
+        richColors: true,
+      });
       console.error("Erro ao criar produto:", error);
     }
   };
