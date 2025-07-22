@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Info } from "lucide-react";
 
 interface ProductFormProps {
   product?: Product;
@@ -65,8 +66,16 @@ export default function ProductForm({ product, title }: ProductFormProps) {
       <div>
         <h1 className="text-3xl font-bold">{title}</h1>
         <p className="text-muted-foreground">
-          Preencha as informações do produto
+          Preencha as informações do produto. Você pode editar essas informações
+          mais tarde.
         </p>
+      </div>
+
+      <div className="mt-2 flex max-w-fit items-center gap-2 rounded-lg bg-yellow-100 py-1 text-yellow-900">
+        <Info className="ml-2 h-5 w-5" />
+        <span className="mr-2 text-sm font-medium">
+          É possível visualizar em tempo real a criação do card para o produto.
+        </span>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-12 sm:grid-cols-2">
@@ -186,7 +195,7 @@ export default function ProductForm({ product, title }: ProductFormProps) {
           </CardContent>
         </Card>
 
-        <Card className="flex h-full flex-col">
+        <Card className="flex h-full flex-col border-4 border-neutral-900">
           <CardHeader>
             <CardTitle>Preview</CardTitle>
           </CardHeader>
