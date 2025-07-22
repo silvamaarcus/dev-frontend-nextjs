@@ -26,33 +26,33 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
 
-
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const apiData = await api.getProducts();
-      // Carregar produtos do localStorage
-      const localData = localStorageProducts.get();
-      const allProducts = [...apiData, ...localData];
-      
-      setProducts(allProducts);
-      setFilteredProducts(allProducts);
-      
-      const uniqueCategories = Array.from(
-        new Set(allProducts.map(product => product.category))
-      );
-      setCategories(uniqueCategories);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao carregar produtos");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const apiData = await api.getProducts();
+        // Carregar produtos do localStorage
+        const localData = localStorageProducts.get();
+        const allProducts = [...apiData, ...localData];
 
-  fetchProducts();
-}, []);
+        setProducts(allProducts);
+        setFilteredProducts(allProducts);
 
+        const uniqueCategories = Array.from(
+          new Set(allProducts.map((product) => product.category)),
+        );
+        setCategories(uniqueCategories);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Erro ao carregar produtos",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Filtrar produtos baseado na busca e categoria
   useEffect(() => {
@@ -144,7 +144,7 @@ export default function ProductsPage() {
           </SelectTrigger>
           <SelectContent>
             {categories.map((category) => (
-              <SelectItem key={category} value={category}>
+              <SelectItem key={`category-${category}`} value={category}>
                 {category}
               </SelectItem>
             ))}
@@ -168,7 +168,7 @@ export default function ProductsPage() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredProducts.map((product) => (
           <ProductCard
-            key={product.id}
+            key={`product-${product.id}`}
             product={product}
             onDelete={handleDelete}
           />
