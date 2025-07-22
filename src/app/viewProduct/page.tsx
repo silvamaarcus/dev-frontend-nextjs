@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,26 +9,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ArrowLeft } from "lucide-react";
+
+import { ArrowLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ViewProduct() {
-  const [selectedValue, setSelectedValue] = useState<string>("1");
+  const [selectedValue, setSelectedValue] = useState(0);
 
-  useEffect(() => {
-    const storedValue = localStorage.getItem("selectedValue");
-    if (storedValue) {
-      setSelectedValue(storedValue);
+  const addValue = () => {
+    setSelectedValue((prev) => prev + 1);
+  };
+
+  const removeValue = () => {
+    if (selectedValue > 0) {
+      setSelectedValue((prev) => prev - 1);
     }
-  }, []);
+  };
 
   return (
     <div className="min-h-screen">
@@ -80,16 +77,25 @@ export default function ViewProduct() {
             </p>
           </div>
 
-          <div className="mt-12 flex items-center gap-8">
-            <Select value={selectedValue} onValueChange={setSelectedValue}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Quantidade" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">1</SelectItem>
-                <SelectItem value="2">2</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="mt-8 flex items-center gap-6">
+            <div className="flex items-center gap-2 rounded-md bg-neutral-100">
+              <Button
+                variant="ghost"
+                className="cursor-pointer hover:bg-neutral-200"
+                onClick={removeValue}
+              >
+                <Minus className="h-2 w-2" />
+              </Button>
+              <span>{selectedValue}</span>
+              <Button
+                variant="ghost"
+                className="cursor-pointer hover:bg-neutral-200"
+                onClick={addValue}
+              >
+                <Plus className="h-2 w-2" />
+              </Button>
+            </div>
+
             <Button>Adicionar ao carrinho</Button>
           </div>
         </div>
