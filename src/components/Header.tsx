@@ -9,6 +9,8 @@ export const HeaderComponent = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 
+ 
+
   return (
     <>
       <header className="bg-card/50 sticky top-0 z-50 border-b backdrop-blur-sm">
@@ -33,7 +35,7 @@ export const HeaderComponent = () => {
             </nav>
 
             <Button asChild size="sm" className="gap-2">
-              <Link href="/products/new">
+              <Link href="/newProduct">
                 <Plus className="h-4 w-4" />
                 Novo Produto
               </Link>
