@@ -91,7 +91,7 @@ export default function ProductsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center">
         <div className="text-lg">Carregando produtos...</div>
       </div>
     );

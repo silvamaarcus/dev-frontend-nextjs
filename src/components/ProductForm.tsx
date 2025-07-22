@@ -1,7 +1,7 @@
 "use client";
 
 import { CreateProductRequest, Product } from "@/app/types/product";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import {
@@ -14,11 +14,11 @@ import {
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface ProductFormProps {
   product?: Product;
-  // onSubmit: (data: CreateProductRequest) => Promise<void>;
-  // isLoading?: boolean;
   title: string;
 }
 
@@ -30,6 +30,8 @@ const categories = [
 ];
 
 export default function ProductForm({ product, title }: ProductFormProps) {
+  const [imagePreview, setImagePreview] = useState<string>("");
+
   const {
     register,
     handleSubmit,
@@ -46,12 +48,20 @@ export default function ProductForm({ product, title }: ProductFormProps) {
     },
   });
 
+  const watchedImage = watch("image");
+
+  useEffect(() => {
+    if (watchedImage) {
+      setImagePreview(watchedImage);
+    }
+  }, [watchedImage]);
+
   const handleFormSubmit = async (data: CreateProductRequest) => {
     console.log(data);
   };
 
   return (
-    <div className="w-full">
+    <div className="mx-auto max-w-5xl">
       <div>
         <h1 className="text-3xl font-bold">{title}</h1>
         <p className="text-muted-foreground">
@@ -59,13 +69,13 @@ export default function ProductForm({ product, title }: ProductFormProps) {
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Card>
+      <div className="mt-8 grid grid-cols-1 gap-12 sm:grid-cols-2">
+        <Card className="flex h-full flex-col">
           <CardHeader>Informações do Produto</CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <form
               onSubmit={handleSubmit(handleFormSubmit)}
-              className="space-y-6"
+              className="flex h-full flex-col gap-6"
             >
               <div className="space-y-2">
                 <Label htmlFor="title">Nome do Produto</Label>
@@ -105,8 +115,8 @@ export default function ProductForm({ product, title }: ProductFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="category">Categoria</Label>
                 <Select
-                value={watch("category")}
-                onValueChange={(value) => setValue("category", value)}
+                  value={watch("category")}
+                  onValueChange={(value) => setValue("category", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma categoria" />
@@ -147,13 +157,21 @@ export default function ProductForm({ product, title }: ProductFormProps) {
                 <Label htmlFor="urlImage">Descrição</Label>
                 <Textarea
                   id="description"
-                  rows={4}
+                  rows={10}
+                  maxLength={500}
                   {...register("description", {
                     required: "Descrição é obrigatória.",
+                    maxLength: {
+                      value: 500,
+                      message: "A descrição deve ter no máximo 500 caracteres",
+                    },
                   })}
                   placeholder="Descreva o produto..."
                   className={errors.description ? "border-destructive" : ""}
                 />
+                <div className="text-muted-foreground text-sm">
+                  {watch("description")?.length || 0}/500 caracteres
+                </div>
                 {errors.description && (
                   <p className="text-destructive text-sm">
                     {errors.description.message}
@@ -161,10 +179,51 @@ export default function ProductForm({ product, title }: ProductFormProps) {
                 )}
               </div>
 
-              <Button type="submit" className="w-full cursor-pointer">
+              <Button type="submit" className="mt-auto w-full cursor-pointer">
                 Salvar
               </Button>
             </form>
+          </CardContent>
+        </Card>
+
+        <Card className="flex h-full flex-col">
+          <CardHeader>
+            <CardTitle>Preview</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1">
+            <div className="space-y-4">
+              {imagePreview ? (
+                <div className="bg-muted/30 relative aspect-square h-full w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={imagePreview}
+                    alt="Preview"
+                    fill
+                    className="h-full w-full object-cover p-4"
+                    onError={() => setImagePreview("")}
+                    unoptimized
+                  />
+                </div>
+              ) : (
+                <div className="bg-muted/30 flex aspect-square items-center justify-center rounded-lg">
+                  <p className="text-muted-foreground">Imagem aparecerá aqui</p>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <h3 className="font-semibold">
+                  {watch("title") || "Nome do produto"}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  {watch("category") || "Categoria"}
+                </p>
+                <p className="text-primary text-lg font-bold">
+                  R${watch("price") || "0.00"}
+                </p>
+                <p className="text-muted-foreground text-sm break-words">
+                  {watch("description") || "Descrição do produto"}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
