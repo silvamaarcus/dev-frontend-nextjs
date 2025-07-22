@@ -1,21 +1,39 @@
+"use client";
+
 import { Edit, Star, Trash2 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { Product } from "@/app/types/product";
+import { CreateProductRequest, Product } from "@/app/types/product";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import ProductForm from "./ProductForm";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
   onDelete?: (id: number) => void;
+  onEdit?: (data: CreateProductRequest) => void;
 }
 
-export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  onDelete,
+  onEdit,
+}: ProductCardProps) => {
+  const [open, setOpen] = useState(false);
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
-      currency: "BRL", 
+      currency: "BRL",
     }).format(price);
   };
 
@@ -23,6 +41,12 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
+  };
+
+  const handleEdit = async (data: CreateProductRequest) => {
+    if (onEdit) {
+      await onEdit(data);
+    }
   };
 
   return (
@@ -67,18 +91,32 @@ export const ProductCard = ({ product, onDelete }: ProductCardProps) => {
           <Link href={`/products/${product.id}`}>Ver Detalhes</Link>
         </Button>
 
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/products/${product.id}/edit`}>
-            <Edit className="h-4 w-4" />
-          </Link>
-        </Button>
+        {onEdit && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[825px]">
+              <DialogHeader>
+                <DialogTitle>Editar Produto</DialogTitle>
+              </DialogHeader>
+              <ProductForm
+                product={product}
+                title="Editar Produto"
+                onSubmit={handleEdit}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
 
         {onDelete && (
           <Button
             variant="outline"
             size="sm"
             onClick={() => onDelete(product.id)}
-            className="text-destructive hover:bg-destructive hover:text-white cursor-pointer"
+            className="text-destructive hover:bg-destructive cursor-pointer hover:text-white"
           >
             <Trash2 className="h-4 w-4" />
           </Button>

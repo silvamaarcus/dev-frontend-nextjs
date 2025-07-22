@@ -30,6 +30,22 @@ export const api = {
     return response.json();
   },
 
+  // PUT /products/:id – atualizar produto
+  updateProduct: async (
+    id: number,
+    product: CreateProductRequest,
+  ): Promise<Product> => {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    });
+    if (!response.ok) throw new Error("Failed to update product");
+    return response.json();
+  },
+
   // DELETE /products/:id – deletar produto
   deleteProduct: async (id: number): Promise<void> => {
     const response = await fetch(`${BASE_URL}/products/${id}`, {

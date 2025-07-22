@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Search, Filter } from "lucide-react";
 import { toast } from "sonner";
-import { Product } from "../types/product";
+import { CreateProductRequest, Product } from "../types/product";
 import { api } from "../services/api";
 import { useState, useEffect } from "react";
 import { localStorageProducts } from "./helper";
@@ -86,7 +86,30 @@ export default function ProductsPage() {
       });
     } catch (error) {
       toast("Erro ao deletar produto", {
-        description: "Não foi possível deletar o produto.",
+        description: "Não foi possível deletar o produto selecionado.",
+        richColors: true,
+      });
+      console.error("Erro ao deletar produto:", error);
+    }
+  };
+
+  const handleEdit = async (id: number, data: CreateProductRequest) => {
+    try {
+      await api.updateProduct(id, data);
+
+      // Atualizar o estado local com o produto editado
+      setProducts((prev) =>
+        prev.map((product) =>
+          product.id === id ? { ...product, ...data } : product,
+        ),
+      );
+      toast("Produto editado com sucesso!", {
+        description: "O produto foi editado com sucesso.",
+        richColors: true,
+      });
+    } catch (error) {
+      toast("Erro ao editar produto", {
+        description: "Não foi possível editar o produto selecionado.",
         richColors: true,
       });
       console.error("Erro ao deletar produto:", error);
@@ -170,7 +193,8 @@ export default function ProductsPage() {
           <ProductCard
             key={`${product.id}-${product.title}`}
             product={product}
-            onDelete={handleDelete}
+            onDelete={() => handleDelete(product.id)}
+            onEdit={(data) => handleEdit(product.id, data)}
           />
         ))}
       </div>
