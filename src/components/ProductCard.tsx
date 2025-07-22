@@ -50,7 +50,7 @@ export const ProductCard = ({
   };
 
   return (
-    <Card className="group from-card to-card/90 border-border/50 overflow-hidden bg-gradient-to-br transition-all duration-300 hover:shadow-lg">
+    <Card className="group from-card to-card/90 border-border/50 overflow-hidden bg-gradient-to-br transition-all duration-300 hover:shadow-2xl hover:border hover:border-neutral-400 cursor-pointer">
       <div className="bg-muted/30 relative aspect-square overflow-hidden">
         <Image
           src={product.image}
@@ -94,14 +94,11 @@ export const ProductCard = ({
         {onEdit && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="cursor-pointer hover:bg-neutral-950 hover:text-white transition-colors">
                 <Edit className="h-4 w-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[825px]">
-              <DialogHeader>
-                <DialogTitle>Editar Produto</DialogTitle>
-              </DialogHeader>
+            <DialogContent className="sm:max-w-[825px]">              
               <ProductForm
                 product={product}
                 title="Editar Produto"
