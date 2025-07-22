@@ -1,4 +1,4 @@
-import { Product } from "../types/product";
+import { CreateProductRequest, Product } from "../types/product";
 
 const BASE_URL = "https://fakestoreapi.com";
 
@@ -14,6 +14,19 @@ export const api = {
   getProduct: async (id: number): Promise<Product> => {
     const response = await fetch(`${BASE_URL}/products/${id}`);
     if (!response.ok) throw new Error("Failed to fetch product");
+    return response.json();
+  },
+
+  // POST /products – criar produto
+  createProduct: async (product: CreateProductRequest): Promise<Product> => {
+    const response = await fetch(`${BASE_URL}/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    });
+    if (!response.ok) throw new Error("Failed to create product");
     return response.json();
   },
 

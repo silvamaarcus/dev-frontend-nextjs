@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Product } from "../types/product";
 import { api } from "../services/api";
 import { useState, useEffect } from "react";
+import { localStorageProducts } from "./helper";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -25,42 +26,50 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const data = await api.getProducts();
-        setProducts(data);
-        setFilteredProducts(data);
-        
-        // Extrair categorias únicas
-        const uniqueCategories = Array.from(new Set(data.map(product => product.category)));
-        setCategories(uniqueCategories);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erro ao carregar produtos",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchProducts();
-  }, []);
+  useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const apiData = await api.getProducts();
+      // Carregar produtos do localStorage
+      const localData = localStorageProducts.get();
+      const allProducts = [...apiData, ...localData];
+      
+      setProducts(allProducts);
+      setFilteredProducts(allProducts);
+      
+      const uniqueCategories = Array.from(
+        new Set(allProducts.map(product => product.category))
+      );
+      setCategories(uniqueCategories);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao carregar produtos");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
+
 
   // Filtrar produtos baseado na busca e categoria
   useEffect(() => {
     let filtered = products;
 
     if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
     if (selectedCategory) {
-      filtered = filtered.filter(product => product.category === selectedCategory);
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory,
+      );
     }
 
     setFilteredProducts(filtered);
@@ -70,7 +79,7 @@ export default function ProductsPage() {
     try {
       await api.deleteProduct(id);
       // Atualizar o estado local removendo o produto
-      setProducts(prev => prev.filter(product => product.id !== id));
+      setProducts((prev) => prev.filter((product) => product.id !== id));
       toast("Produto deletado com sucesso!", {
         description: "O produto foi removido da lista.",
         richColors: true,
@@ -99,7 +108,7 @@ export default function ProductsPage() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-lg text-red-500">Erro: {error}</div>
       </div>
     );
@@ -167,7 +176,7 @@ export default function ProductsPage() {
       </div>
 
       {filteredProducts.length === 0 && !loading && (
-        <div className="text-center py-12">
+        <div className="py-12 text-center">
           <p className="text-muted-foreground text-lg">
             Nenhum produto encontrado com os filtros aplicados.
           </p>

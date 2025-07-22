@@ -21,6 +21,7 @@ import { Info } from "lucide-react";
 interface ProductFormProps {
   product?: Product;
   title: string;
+  onSubmit: (data: CreateProductRequest) => Promise<void>;
 }
 
 const categories = [
@@ -30,7 +31,11 @@ const categories = [
   "women's clothing",
 ];
 
-export default function ProductForm({ product, title }: ProductFormProps) {
+export default function ProductForm({
+  product,
+  title,
+  onSubmit,
+}: ProductFormProps) {
   const [imagePreview, setImagePreview] = useState<string>("");
 
   const {
@@ -58,7 +63,7 @@ export default function ProductForm({ product, title }: ProductFormProps) {
   }, [watchedImage]);
 
   const handleFormSubmit = async (data: CreateProductRequest) => {
-    console.log(data);
+    await onSubmit(data);
   };
 
   return (
@@ -213,7 +218,7 @@ export default function ProductForm({ product, title }: ProductFormProps) {
                   />
                 </div>
               ) : (
-                <div className="bg-neutral-200 flex aspect-square items-center justify-center rounded-lg">
+                <div className="flex aspect-square items-center justify-center rounded-lg bg-neutral-200">
                   <p className="text-muted-foreground">Imagem aparecerá aqui</p>
                 </div>
               )}

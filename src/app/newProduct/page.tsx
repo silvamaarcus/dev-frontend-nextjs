@@ -1,9 +1,29 @@
+"use client";
+
 import ProductForm from "@/components/ProductForm";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { CreateProductRequest } from "../types/product";
+import { api } from "../services/api";
+import { localStorageProducts } from "../products/helper";
 
 export default function CreateProduct() {
+  const router = useRouter();
+
+  const handleCreateProduct = async (data: CreateProductRequest) => {
+    try {
+      // Simula o POST na API
+      await api.createProduct(data);
+      // Salva localmente
+      const savedProduct = localStorageProducts.save(data);
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao criar produto:", error);
+    }
+  };
+
   return (
     <>
       <Button
@@ -16,7 +36,7 @@ export default function CreateProduct() {
         </Link>
       </Button>
 
-      <ProductForm title="Criar Novo Produto" />
+      <ProductForm title="Criar Novo Produto" onSubmit={handleCreateProduct} />
     </>
   );
 }
