@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -12,11 +14,22 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ViewProduct() {
+  const [selectedValue, setSelectedValue] = useState<string>("1");
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem("selectedValue");
+    if (storedValue) {
+      setSelectedValue(storedValue);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Button
@@ -29,7 +42,7 @@ export default function ViewProduct() {
         </Link>
       </Button>
 
-      <div className="my-8 grid grid-cols-1 sm:gap-18 sm:grid-cols-2">
+      <div className="my-8 grid grid-cols-1 sm:grid-cols-2 sm:gap-18">
         <Carousel className="sm:m-12">
           <CarouselContent>
             {Array.from({ length: 3 }).map((_, index) => (
@@ -50,7 +63,7 @@ export default function ViewProduct() {
           <CarouselNext />
         </Carousel>
 
-        <div className="my-6 sm:my-12 flex flex-col items-start justify-center gap-12 p-2">
+        <div className="my-6 flex flex-col items-start justify-center gap-12 p-2 sm:my-12">
           <div className="space-y-6">
             <h3 className="text-foreground mb-2 text-4xl leading-tight font-bold">
               Nome do Produto
@@ -68,9 +81,9 @@ export default function ViewProduct() {
           </div>
 
           <div className="mt-12 flex items-center gap-8">
-            <Select>
-              <SelectTrigger className="w-full">
-                Selecione a quantidade
+            <Select value={selectedValue} onValueChange={setSelectedValue}>
+              <SelectTrigger className="w-full md:w-[200px]">
+                <SelectValue placeholder="Quantidade" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="1">1</SelectItem>
