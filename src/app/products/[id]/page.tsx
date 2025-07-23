@@ -17,32 +17,27 @@ import { Product } from "../../types/product";
 
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { api } from "@/app/services/api";
+import { useParams } from "next/navigation";
 
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
 
-export default function ProductPage({ params }: ProductPageProps) {
+
+export default function ProductPage() {
+  const params = useParams();
+  const id = params.id as string;
+  
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedValue, setSelectedValue] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://fakestoreapi.com/products/${params.id}`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Produto não encontrado");
-        }
-
-        const productData = await response.json();
+        const productData = await api.getProduct(Number(id));
         setProduct(productData);
       } catch (err) {
         setError(
@@ -54,7 +49,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [id]);
 
   const addValue = () => {
     setSelectedValue((prev) => prev + 1);
@@ -188,7 +183,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             <Button>Adicionar ao carrinho</Button>
           </div>
-          <div className="text-muted-foreground space-y-2 border-t pt-4 text-sm w-full">
+          <div className="text-muted-foreground w-full space-y-2 border-t pt-4 text-sm">
             <p>✓ Entrega rápida disponível</p>
             <p>✓ Garantia de qualidade</p>
             <p>✓ Devolução em até 30 dias</p>
