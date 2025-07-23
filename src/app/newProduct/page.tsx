@@ -15,7 +15,6 @@ export default function CreateProduct() {
 
   const handleCreateProduct = async (data: CreateProductRequest) => {
     try {
-      // Simula o POST na API
       await api.createProduct(data);      
       // Salva localmente
       const savedProduct = localStorageProducts.save(data);
