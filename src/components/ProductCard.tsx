@@ -7,9 +7,15 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { CreateProductRequest, Product } from "@/app/types/product";
 import Image from "next/image";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import ProductForm from "./ProductForm";
-import { useState } from "react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./ui/drawer";
 
 interface ProductCardProps {
   product: Product;
@@ -22,7 +28,6 @@ export const ProductCard = ({
   onDelete,
   onEdit,
 }: ProductCardProps) => {
-  const [open, setOpen] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -55,7 +60,7 @@ export const ProductCard = ({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        
+
         <Link href={`/products/${product.id}`}>
           <CardContent className="p-4">
             <div className="mb-2 flex items-start justify-between gap-2">
@@ -89,8 +94,8 @@ export const ProductCard = ({
           </Button>
 
           {onEdit && (
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
+            <Drawer direction="right">
+              <DrawerTrigger>
                 <Button
                   variant="outline"
                   size="sm"
@@ -98,15 +103,24 @@ export const ProductCard = ({
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[825px]">
-                <ProductForm
-                  product={product}
-                  title="Editar Produto"
-                  onSubmit={handleEdit}
-                />
-              </DialogContent>
-            </Dialog>
+              </DrawerTrigger>
+              <DrawerContent>
+                <DrawerHeader>
+                  <DrawerTitle>Editar produto</DrawerTitle>
+                  <DrawerDescription>
+                    Preencha as informações do produto. Você pode editar essas
+                    informações mais tarde.
+                  </DrawerDescription>
+                </DrawerHeader>
+                <div className="flex-1 overflow-y-auto">
+                  <ProductForm
+                    product={product}
+                    onSubmit={handleEdit}
+                    hidePreview={true}
+                  />
+                </div>
+              </DrawerContent>
+            </Drawer>
           )}
 
           {onDelete && (

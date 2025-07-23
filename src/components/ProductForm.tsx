@@ -20,8 +20,9 @@ import { Info } from "lucide-react";
 
 interface ProductFormProps {
   product?: Product;
-  title: string;
+  title?: string;
   onSubmit: (data: CreateProductRequest) => Promise<void>;
+  hidePreview?: boolean;
 }
 
 const categories = [
@@ -35,6 +36,7 @@ export default function ProductForm({
   product,
   title,
   onSubmit,
+  hidePreview = false,
 }: ProductFormProps) {
   const [imagePreview, setImagePreview] = useState<string>("");
 
@@ -68,22 +70,29 @@ export default function ProductForm({
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div>
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <p className="text-muted-foreground">
-          Preencha as informações do produto. Você pode editar essas informações
-          mais tarde.
-        </p>
-      </div>
+      {!hidePreview && (
+        <>
+          <div>
+            <h1 className="text-3xl font-bold">{title}</h1>
+            <p className="text-muted-foreground">
+              Preencha as informações do produto. Você pode editar essas
+              informações mais tarde.
+            </p>
+          </div>
 
-      <div className="mt-2 flex max-w-fit items-center gap-2 rounded-lg bg-yellow-100 py-1 text-yellow-900">
-        <Info className="ml-2 h-5 w-5" />
-        <span className="mr-2 text-sm font-medium">
-          É possível visualizar em tempo real a criação do card para o produto.
-        </span>
-      </div>
+          <div className="mt-2 flex max-w-fit items-center gap-2 rounded-lg bg-yellow-100 py-1 text-yellow-900">
+            <Info className="ml-2 h-5 w-5" />
+            <span className="mr-2 text-sm font-medium">
+              É possível visualizar em tempo real a criação do card para o
+              produto.
+            </span>
+          </div>
+        </>
+      )}
 
-      <div className="mt-8 grid grid-cols-1 gap-12 sm:grid-cols-2">
+      <div
+        className={`grid grid-cols-1 gap-12 ${hidePreview === true ? "sm:grid-cols-1" : "mt-8 sm:grid-cols-2"} ?`}
+      >
         <Card className="flex h-full flex-col">
           <CardHeader>Informações do Produto</CardHeader>
           <CardContent className="flex-1">
@@ -202,47 +211,50 @@ export default function ProductForm({
             </form>
           </CardContent>
         </Card>
+        {!hidePreview && (
+          <Card className="flex h-full flex-col border-4 border-neutral-900">
+            <CardHeader>
+              <CardTitle>Preview</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1">
+              <div className="space-y-4">
+                {imagePreview ? (
+                  <div className="bg-muted/30 relative aspect-square h-full w-full overflow-hidden rounded-lg">
+                    <Image
+                      src={imagePreview}
+                      alt="Preview"
+                      fill
+                      className="h-full w-full object-cover p-4"
+                      onError={() => setImagePreview("")}
+                      unoptimized
+                    />
+                  </div>
+                ) : (
+                  <div className="flex aspect-square items-center justify-center rounded-lg bg-neutral-200">
+                    <p className="text-muted-foreground">
+                      Imagem aparecerá aqui
+                    </p>
+                  </div>
+                )}
 
-        <Card className="flex h-full flex-col border-4 border-neutral-900">
-          <CardHeader>
-            <CardTitle>Preview</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1">
-            <div className="space-y-4">
-              {imagePreview ? (
-                <div className="bg-muted/30 relative aspect-square h-full w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={imagePreview}
-                    alt="Preview"
-                    fill
-                    className="h-full w-full object-cover p-4"
-                    onError={() => setImagePreview("")}
-                    unoptimized
-                  />
+                <div className="space-y-2">
+                  <h3 className="font-semibold">
+                    {watch("title") || "Nome do produto"}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {watch("category") || "Categoria"}
+                  </p>
+                  <p className="text-primary text-lg font-bold">
+                    R${watch("price") || "0.00"}
+                  </p>
+                  <p className="text-muted-foreground text-sm break-words">
+                    {watch("description") || "Descrição do produto"}
+                  </p>
                 </div>
-              ) : (
-                <div className="flex aspect-square items-center justify-center rounded-lg bg-neutral-200">
-                  <p className="text-muted-foreground">Imagem aparecerá aqui</p>
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <h3 className="font-semibold">
-                  {watch("title") || "Nome do produto"}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {watch("category") || "Categoria"}
-                </p>
-                <p className="text-primary text-lg font-bold">
-                  R${watch("price") || "0.00"}
-                </p>
-                <p className="text-muted-foreground text-sm break-words">
-                  {watch("description") || "Descrição do produto"}
-                </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
