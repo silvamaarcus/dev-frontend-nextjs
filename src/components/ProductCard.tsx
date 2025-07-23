@@ -83,7 +83,7 @@ export const ProductCard = ({
           </CardContent>
 
           <CardFooter className="flex gap-2 p-4 pt-0">
-            <Button asChild variant="outline" size="sm" className="flex-1">
+            <Button variant="outline" size="sm" className="flex-1">
               <Link href={`/products/${product.id}`}>Ver Detalhes</Link>
             </Button>
 
