@@ -45,18 +45,18 @@ export const ProductCard = ({
 
   return (
     <>
-      <Link href={`/products/${product.id}`}>
-        <Card className="group from-card to-card/90 border-border/50 cursor-pointer overflow-hidden bg-gradient-to-br transition-all duration-300 hover:border hover:border-neutral-400 hover:shadow-2xl">
-          <div className="bg-muted/30 relative aspect-square overflow-hidden">
-            <Image
-              src={product.image}
-              fill
-              alt={product.title}
-              className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
-
+      <Card className="group from-card to-card/90 border-border/50 cursor-pointer overflow-hidden bg-gradient-to-br transition-all duration-300 hover:border hover:border-neutral-400 hover:shadow-2xl">
+        <div className="bg-muted/30 relative aspect-square overflow-hidden">
+          <Image
+            src={product.image}
+            fill
+            alt={product.title}
+            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+        
+        <Link href={`/products/${product.id}`}>
           <CardContent className="p-4">
             <div className="mb-2 flex items-start justify-between gap-2">
               <Badge variant="secondary" className="text-xs">
@@ -81,46 +81,46 @@ export const ProductCard = ({
               {formatPrice(product.price)}
             </div>
           </CardContent>
+        </Link>
 
-          <CardFooter className="flex gap-2 p-4 pt-0">
-            <Button variant="outline" size="sm" className="flex-1">
-              <Link href={`/products/${product.id}`}>Ver Detalhes</Link>
+        <CardFooter className="flex gap-2 p-4 pt-0">
+          <Button variant="outline" size="sm" className="flex-1">
+            <Link href={`/products/${product.id}`}>Ver Detalhes</Link>
+          </Button>
+
+          {onEdit && (
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="cursor-pointer transition-colors hover:bg-neutral-950 hover:text-white"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[825px]">
+                <ProductForm
+                  product={product}
+                  title="Editar Produto"
+                  onSubmit={handleEdit}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
+
+          {onDelete && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(product.id)}
+              className="text-destructive hover:bg-destructive cursor-pointer hover:text-white"
+            >
+              <Trash2 className="h-4 w-4" />
             </Button>
-
-            {onEdit && (
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer transition-colors hover:bg-neutral-950 hover:text-white"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[825px]">
-                  <ProductForm
-                    product={product}
-                    title="Editar Produto"
-                    onSubmit={handleEdit}
-                  />
-                </DialogContent>
-              </Dialog>
-            )}
-
-            {onDelete && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onDelete(product.id)}
-                className="text-destructive hover:bg-destructive cursor-pointer hover:text-white"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </CardFooter>
-        </Card>
-      </Link>
+          )}
+        </CardFooter>
+      </Card>
     </>
   );
 };
