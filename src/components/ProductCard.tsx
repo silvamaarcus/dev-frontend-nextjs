@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { CreateProductRequest, Product } from "@/app/types/product";
 import Image from "next/image";
+import { useState } from "react";
 import ProductForm from "./ProductForm";
 import {
   Drawer,
@@ -28,6 +29,7 @@ export const ProductCard = ({
   onDelete,
   onEdit,
 }: ProductCardProps) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -45,6 +47,7 @@ export const ProductCard = ({
   const handleEdit = async (data: CreateProductRequest) => {
     if (onEdit) {
       await onEdit(data);
+      setIsDrawerOpen(false);
     }
   };
 
@@ -94,8 +97,12 @@ export const ProductCard = ({
           </Button>
 
           {onEdit && (
-            <Drawer direction="right">
-              <DrawerTrigger>
+            <Drawer
+              direction="right"
+              open={isDrawerOpen}
+              onOpenChange={setIsDrawerOpen}
+            >
+              <DrawerTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
