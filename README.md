@@ -1,8 +1,10 @@
+![](https://github.com/user-attachments/assets/5b89ede3-dfdf-4579-aa91-09a7b2e17b10)
+
 # NextStore
 
 NextStore é uma aplicação web de demonstração desenvolvida com Next.js 15 (App Router) e TypeScript que implementa um CRUD (Criar, Ler, Atualizar, Deletar) completo de produtos. A aplicação interage com a FakeStore API para gerenciar os dados dos produtos, demonstrando a integração de dados externos e a construção de interfaces reativas e performáticas.
 
-## Tecnologias Utilizadas
+## ⌨️ Tecnologias Utilizadas
 
 Para o desenvolvimento deste projeto, foram utilizadas tecnologias modernas que garantem desempenho, escalabilidade e uma excelente experiência do usuário:
 
@@ -20,7 +22,7 @@ Para o desenvolvimento deste projeto, foram utilizadas tecnologias modernas que 
 
 Essas tecnologias foram escolhidas para garantir um desenvolvimento eficiente, seguindo as melhores práticas do mercado e proporcionando uma aplicação leve, rápida e responsiva.
 
-## Funcionalidades
+## 🎉 Funcionalidades
 
 - **Listagem de produtos:** Exibe uma lista de produtos com informações como nome, preço e imagem.
 - **Visualização de um produto:** Permite visualizar detalhes de um produto específico, redirecionando para uma página dedicada.
@@ -33,15 +35,15 @@ Essas tecnologias foram escolhidas para garantir um desenvolvimento eficiente, s
 
 <blockquote style="background-color: #f6f8fa; border-left: 4px solid #f0b80d; padding: 12px 16px; margin: 16px 0; border-radius: 4px; color: #333; font-size: 0.95em; line-height: 1.5;">
   <span style="display: inline-block; margin-right: 8px; font-size: 1.2em;">💡</span>
-  A FakeStore API não armazena dados. Para simular um CRUD, tanto criações quanto alterações dos produtos são salvas localmente no localStorage do navegador, persistindo apenas na sua sessão e sendo perdidas ao limpar o cache. Isso é feito para evitar a necessidade de uma API externa para o desenvolvimento.
+  A FakeStore API não armazena dados. Para simular um CRUD, tanto criações quanto alterações dos produtos são salvas localmente no localStorage do navegador, persistindo apenas na sua sessão e sendo perdidas ao limpar o cache.
 </blockquote>
 
-## Pré-requisitos
+## 📝 Pré-requisitos
 
 - [Node.js](https://nodejs.org/) (versão 14 ou superior)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) (gerenciadores de pacotes)
 
-## Instalação e Uso
+## ⚙️ Instalação e Uso 
 
 1. **Clone o repositório:**
 
@@ -93,26 +95,19 @@ node_modules/
 .DS_Store
 ```
 
-## Responsividade e Design
+## Componentização
+A aplicação foi desenvolvida com uma abordagem de componentização, onde cada parte da interface é encapsulada em componentes reutilizáveis. Isso facilita a manutenção e a escalabilidade do código, permitindo que novos recursos sejam adicionados sem impactar negativamente o desempenho ou a legibilidade.
 
-O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias mencionadas e segue um design responsivo, garantindo uma experiência consistente em dispositivos móveis, tablets e desktops. O desenvolvimento foi baseado em um wireframe minimalista, com adaptações realizadas para alcançar um design pixel perfect.
+## 📱 Responsividade e Design
 
-## Imagens
+O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias mencionadas e segue um design responsivo, garantindo uma experiência consistente em dispositivos móveis, tablets e desktops. A estilização foi feita com Tailwind CSS, que permite uma personalização rápida e eficiente do layout, mantendo a aplicação leve e de fácil manutenção.
 
-**Desktop**
-![Image]()
-![Image]()
-
-**Mobile**
-![Image]()
-![Image]()
-
-## Links
+## 🌐 Links
 
 - [Repositório no GitHub](https://github.com/silvamaarcus/dev-frontend-nextjs)
 - [Deploy na Vercel](https://dev-frontend-nextjs-mu.vercel.app/)
 
-## Observações
+## 📍 Observações
 
 Este projeto foi desenvolvido como parte de um desafio técnico proposto pela MaxUp Consultoria. Veja meu repositório no GitHub para obter mais informações.
 
