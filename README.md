@@ -22,7 +22,7 @@ Para o desenvolvimento deste projeto, foram utilizadas tecnologias modernas que 
 
 Essas tecnologias foram escolhidas para garantir um desenvolvimento eficiente, seguindo as melhores práticas do mercado e proporcionando uma aplicação leve, rápida e responsiva.
 
-## 🎉 Funcionalidades
+## 💎 Funcionalidades
 
 - **Listagem de produtos:** Exibe uma lista de produtos com informações como nome, preço e imagem.
 - **Visualização de um produto:** Permite visualizar detalhes de um produto específico, redirecionando para uma página dedicada.
@@ -95,12 +95,16 @@ node_modules/
 .DS_Store
 ```
 
-## Componentização
+## 📦 Componentização
 A aplicação foi desenvolvida com uma abordagem de componentização, onde cada parte da interface é encapsulada em componentes reutilizáveis. Isso facilita a manutenção e a escalabilidade do código, permitindo que novos recursos sejam adicionados sem impactar negativamente o desempenho ou a legibilidade.
 
 ## 📱 Responsividade e Design
 
 O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias mencionadas e segue um design responsivo, garantindo uma experiência consistente em dispositivos móveis, tablets e desktops. A estilização foi feita com Tailwind CSS, que permite uma personalização rápida e eficiente do layout, mantendo a aplicação leve e de fácil manutenção.
+
+## 📚 Commits
+
+Os commits foram feitos seguindo o "Conventional Commits", uma convenção de mensagens de commit que define um formato padrão para mensagens de commit, facilitando a leitura e compreensão do histórico do projeto. 
 
 ## 🌐 Links
 
@@ -111,6 +115,6 @@ O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias 
 
 Este projeto foi desenvolvido como parte de um desafio técnico proposto pela MaxUp Consultoria. Veja meu repositório no GitHub para obter mais informações.
 
-## Conclusão
+## 🎉 Conclusão
 
 Gostaria de expressar minha sincera gratidão à plataforma MaxUp Consultoria pela incrível oportunidade de participar deste projeto tão enriquecedor. A experiência foi extremamente valiosa para mim, e estou muito feliz por ter tido a chance de contribuir e aprender com todos os envolvidos. Espero que este projeto possa ser útil para a comunidade e que possa servir como um exemplo de como a tecnologia pode ser usada para resolver problemas reais.
