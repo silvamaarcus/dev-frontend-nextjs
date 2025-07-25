@@ -108,7 +108,6 @@ Os commits foram feitos seguindo o "Conventional Commits", uma convenção de me
 
 ## 🌐 Links
 
-- [Repositório no GitHub](https://github.com/silvamaarcus/dev-frontend-nextjs)
 - [Deploy na Vercel](https://dev-frontend-nextjs-mu.vercel.app/)
 
 ## 📍 Observações
@@ -117,4 +116,4 @@ Este projeto foi desenvolvido como parte de um desafio técnico proposto pela Ma
 
 ## 🎉 Conclusão
 
-Gostaria de expressar minha sincera gratidão à plataforma MaxUp Consultoria pela incrível oportunidade de participar deste projeto tão enriquecedor. A experiência foi extremamente valiosa para mim, e estou muito feliz por ter tido a chance de contribuir e aprender com todos os envolvidos. Espero que este projeto possa ser útil para a comunidade e que possa servir como um exemplo de como a tecnologia pode ser usada para resolver problemas reais.
+Gostaria de expressar minha sincera gratidão à empresa MaxUp Consultoria pela oportunidade de participar deste processo seletivo. Foi uma experiência valiosa, e estou muito feliz por mostrar minhas habilidades. Espero que este projeto possa ser útil para a comunidade e que possa servir como um exemplo de como a tecnologia pode ser usada para resolver problemas reais.
