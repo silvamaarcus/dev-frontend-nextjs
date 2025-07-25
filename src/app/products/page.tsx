@@ -30,7 +30,6 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
         const apiData = await api.getProducts();
         // Carregar produtos do localStorage
         const localData = localStorageProducts.get();
@@ -123,19 +122,25 @@ export default function ProductsPage() {
   };
 
   if (loading) {
-  return (
-    <section className="bg-background min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        {/* Skeleton do header */}
-        <div className="mb-8 space-y-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-4 w-72" />
+    return (
+      <section className="bg-background text-foreground min-h-screen p-6">
+        <div className="mb-8 space-y-2">
+          <Skeleton className="h-8 w-1/2 rounded-lg" />
+          <Skeleton className="h-4 w-3/4 rounded-lg" />
         </div>
-        
-        {/* Grid de skeletons dos produtos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <div key={index} className="space-y-3">
+
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center">
+          <Skeleton className="h-9 w-full rounded-md md:w-1/3" />
+          <Skeleton className="h-9 w-full rounded-md md:w-[200px]" />
+        </div>
+
+        <div className="mb-4">
+          <Skeleton className="h-4 w-48 rounded-lg" />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div key={index} className="space-y-4 rounded-xl border p-4">
               <Skeleton className="aspect-square w-full rounded-lg" />
               <div className="space-y-2">
                 <Skeleton className="h-4 w-3/4" />
@@ -145,10 +150,9 @@ export default function ProductsPage() {
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }
 
   if (error) {
     return (
